@@ -1,7 +1,7 @@
 FROM node:18-alpine AS frontend
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --no-audit --no-fund
 COPY . .
 RUN npm run build
 
@@ -12,6 +12,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
 COPY . .
 COPY --from=frontend /app/public/build ./public/build
+RUN rm -f public/hot || true
 RUN composer install --no-dev --prefer-dist --optimize-autoloader
 RUN chown -R www-data:www-data storage bootstrap/cache
 COPY docker/nginx.conf /etc/nginx/templates/default.conf.template
