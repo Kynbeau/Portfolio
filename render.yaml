@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: portfolio
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: LOG_CHANNEL
+        value: stack
+      - key: CACHE_DRIVER
+        value: file
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: APP_KEY
+        generateValue: true
