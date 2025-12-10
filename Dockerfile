@@ -6,7 +6,8 @@ COPY . .
 RUN npm run build
 
 FROM php:8.2-fpm AS backend
-RUN apt-get update && apt-get install -y nginx git curl unzip gettext-base libpq-dev libzip-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y nginx git curl unzip gettext-base libpq-dev libzip-dev zlib1g-dev libonig-dev pkg-config && rm -rf /var/lib/apt/lists/*
+RUN docker-php-ext-configure zip
 RUN docker-php-ext-install pdo pdo_mysql mbstring zip opcache
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www
