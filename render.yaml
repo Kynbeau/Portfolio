@@ -9,8 +9,12 @@ services:
     envVars:
       - key: APP_ENV
         value: production
+      - key: APP_DEBUG
+        value: false
       - key: LOG_CHANNEL
-        value: stack
+        value: stderr
+      - key: LOG_LEVEL
+        value: info
       - key: CACHE_DRIVER
         value: file
       - key: SESSION_DRIVER
