@@ -6,8 +6,8 @@ envsubst '${PORT}' < /etc/nginx/templates/default.conf.template > /etc/nginx/con
 
 chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
-if [ -z "${APP_KEY}" ]; then
-  export APP_KEY=$(php -r "echo 'base64:'.base64_encode(random_bytes(32));")
+if ! php -r '$k=getenv("APP_KEY"); if($k && str_starts_with($k,"base64:")){ $raw=base64_decode(substr($k,7), true); if($raw!==false && strlen($raw)===32) exit(0);} exit(1);'; then
+  export APP_KEY=$(php -r 'echo "base64:".base64_encode(random_bytes(32));')
 fi
 
 php /var/www/artisan config:clear || true
